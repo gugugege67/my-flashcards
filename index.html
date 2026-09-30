@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Quizlet Clone</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  :root {
+    --blue: #4255ff;
+    --blue-dark: #3547cc;
+    --dark: #2e3856;
+    --gray: #6b7280;
+    --bg: #f6f7fb;
+    --green: #22c55e;
+    --red: #ef4444;
+    --yellow: #fbbf24;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ===== HEADER ===== */
+  header {
+    background: #fff;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .logo {
+    font-weight: 800;
+    font-size: 20px;
+    color: var(--blue);
+    letter-spacing: -0.5px;
+  }
+  .header-actions { display: flex; gap: 8px; }
+  .icon-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 8px;
+    color: var(--gray);
+  }
+  .icon-btn:hover { background: #f0f1f7; }
+
+  /* ===== SCREENS ===== */
+  .screen {
+    display: none;
+    flex: 1;
+    padding: 20px 16px 100px;
+    max-width: 700px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .screen.active { display: block; }
+
+  /* ===== HOME ===== */
+  .home-title {
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+  .home-sub {
+    color: var(--gray);
+    margin-bottom: 24px;
+    font-size: 14px;
+  }
+  .modes {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .mode-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px 16px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    border: 2px solid transparent;
+  }
+  .mode-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(66,85,255,0.15);
+    border-color: var(--blue);
+  }
+  .mode-card .emoji { font-size: 28px; margin-bottom: 8px; }
+  .mode-card .name { font-weight: 700; font-size: 16px; margin-bottom: 2px; }
+  .mode-card .desc { font-size: 12px; color: var(--gray); }
+
+  /* ===== FLASHCARDS ===== */
+  .cards-progress {
+    text-align: center;
+    color: var(--gray);
+    font-size: 14px;
+    margin-bottom: 14px;
+  }
+  .flashcard-wrap {
+    perspective: 1200px;
+    height: 340px;
+    margin-bottom: 24px;
+  }
+  .flashcard {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+    cursor: pointer;
+  }
+  .flashcard.flipped { transform: rotateY(180deg); }
+  .flashcard-side {
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 28px;
+    font-size: 22px;
+    text-align: center;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  .flashcard-side.back {
+    transform: rotateY(180deg);
+    color: var(--blue);
+    font-weight: 600;
+  }
+  .hint {
+    position: absolute;
+    bottom: 14px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 12px;
+    color: #b0b5c8;
+  }
+
+  /* ===== NAV BUTTONS ===== */
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  .nav-btn {
+    flex: 1;
+    padding: 14px;
+    border-radius: 12px;
+    border: 2px solid #e5e8f5;
+    background: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--dark);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .nav-btn:active { transform: scale(0.97); }
+  .nav-btn.primary {
+    background: var(--blue);
+    color: #fff;
+    border-color: var(--blue);
+  }
+  .nav-btn.primary:hover { background: var(--blue-dark); }
+  .nav-btn:disabled { opacity: 0.4; }
+
+  /* ===== LEARN / TEST ===== */
+  .q-counter {
+    text-align: center;
+    color: var(--gray);
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  .progress-bar {
+    height: 6px;
+    background: #e5e8f5;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 28px;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--blue);
+    transition: width 0.3s;
+  }
+  .question {
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px 20px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option {
+    padding: 16px;
+    border-radius: 12px;
+    border: 2px solid #e5e8f5;
+    background: #fff;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s;
+    color: var(--dark);
+  }
+  .option:hover { border-color: var(--blue); background: #f5f6ff; }
+  .option.correct {
+    background: #dcfce7;
+    border-color: var(--green);
+    color: #166534;
+  }
+  .option.wrong {
+    background: #fee2e2;
+    border-color: var(--red);
+    color: #991b1b;
+  }
+  .option:disabled { cursor: default; }
+
+  /* ===== RESULT ===== */
+  .result {
+    text-align: center;
+    padding: 40px 20px;
+  }
+  .result .score {
+    font-size: 64px;
+    font-weight: 800;
+    color: var(--blue);
+    margin-bottom: 10px;
+  }
+  .result .label {
+    font-size: 18px;
+    color: var(--gray);
+    margin-bottom: 30px;
+  }
+
+  /* ===== MATCH ===== */
+  .match-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .match-tile {
+    padding: 22px 12px;
+    border-radius: 12px;
+    background: #fff;
+    border: 2px solid #e5e8f5;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    word-break: break-word;
+  }
+  .match-tile.selected {
+    border-color: var(--blue);
+    background: #f5f6ff;
+  }
+  .match-tile.matched {
+    background: #dcfce7;
+    border-color: var(--green);
+    color: transparent;
+    pointer-events: none;
+  }
+  .match-tile.wrong {
+    animation: shake 0.4s;
+    border-color: var(--red);
+    background: #fee2e2;
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+  .match-timer {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--blue);
+  }
+
+  /* ===== FOOTER TABBAR ===== */
+  .tabbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-top: 1px solid #e5e8f5;
+    display: flex;
+    justify-content: space-around;
+    padding: 8px 0 max(8px, env(safe-area-inset-bottom));
+    z-index: 10;
+  }
+  .tab {
+    background: none;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    font-size: 10px;
+    color: var(--gray);
+    cursor: pointer;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+  .tab .emoji { font-size: 20px; }
+  .tab.active { color: var(--blue); }
+
+  /* ===== EDITOR MODAL ===== */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    width: 100%;
+    max-width: 520px;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+  .modal h3 {
+    font-size: 18px;
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .modal h3 button {
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: var(--gray);
+  }
+  .edit-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .edit-row input {
+    flex: 1;
+    padding: 10px;
+    border: 1.5px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+  }
+  .edit-row input:focus {
+    outline: none;
+    border-color: var(--blue);
+  }
+  .edit-row button {
+    background: var(--red);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0 12px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .modal-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .modal-actions button {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .btn-add { background: #e5e8f5; color: var(--blue); }
+  .btn-save { background: var(--blue); color: #fff; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Quizlet Clone</div>
+  <div class="header-actions">
+    <button class="icon-btn" onclick="openEditor()" title="Редактировать">✏️</button>
+    <button class="icon-btn" onclick="resetProgress()" title="Сбросить">🔄</button>
+  </div>
+</header>
+
+<!-- HOME -->
+<div class="screen active" id="screen-home">
+  <div class="home-title" id="setTitle">Мой набор</div>
+  <div class="home-sub" id="setCount">0 терминов</div>
+  <div class="modes">
+    <div class="mode-card" onclick="startMode('flash')">
+      <div class="emoji">🃏</div>
+      <div class="name">Карточки</div>
+      <div class="desc">Переворачивай и запоминай</div>
+    </div>
+    <div class="mode-card" onclick="startMode('learn')">
+      <div class="emoji">🎓</div>
+      <div class="name">Учить</div>
+      <div class="desc">Выбор правильного ответа</div>
+    </div>
+    <div class="mode-card" onclick="startMode('test')">
+      <div class="emoji">📝</div>
+      <div class="name">Тест</div>
+      <div class="desc">Проверь себя</div>
+    </div>
+    <div class="mode-card" onclick="startMode('match')">
+      <div class="emoji">⚡</div>
+      <div class="name">Подбор</div>
+      <div class="desc">Соедини пары на время</div>
+    </div>
+  </div>
+</div>
+
+<!-- FLASHCARDS -->
+<div class="screen" id="screen-flash">
+  <div class="cards-progress" id="flashProgress">1 / 1</div>
+  <div class="flashcard-wrap">
+    <div class="flashcard" id="flashcard" onclick="flipCard()">
+      <div class="flashcard-side front" id="flashFront">Вопрос</div>
+      <div class="flashcard-side back" id="flashBack">Ответ</div>
+      <div class="hint">Нажми, чтобы перевернуть</div>
+    </div>
+  </div>
+  <div class="nav-row">
+    <button class="nav-btn" id="flashPrev" onclick="flashPrev()">← Назад</button>
+    <button class="nav-btn primary" onclick="flipCard()">Перевернуть</button>
+    <button class="nav-btn" id="flashNext" onclick="flashNext()">Вперёд →</button>
+  </div>
+</div>
+
+<!-- LEARN / TEST -->
+<div class="screen" id="screen-quiz">
+  <div class="q-counter" id="quizCounter">1 / 1</div>
+  <div class="progress-bar"><div class="progress-bar-fill" id="quizProgress"></div></div>
+  <div class="question" id="quizQuestion">Вопрос</div>
+  <div class="options" id="quizOptions"></div>
+</div>
+
+<!-- MATCH -->
+<div class="screen" id="screen-match">
+  <div class="match-timer" id="matchTimer">0.0с</div>
+  <div class="match-grid" id="matchGrid"></div>
+</div>
+
+<!-- RESULT -->
+<div class="screen" id="screen-result">
+  <div class="result">
+    <div class="score" id="resultScore">0%</div>
+    <div class="label" id="resultLabel">Результат</div>
+    <div class="nav-row">
+      <button class="nav-btn" onclick="goHome()">← На главную</button>
+      <button class="nav-btn primary" onclick="retry()">Повторить</button>
+    </div>
+  </div>
+</div>
+
+<!-- TABBAR -->
+<div class="tabbar">
+  <button class="tab active" data-screen="home" onclick="goHome()">
+    <span class="emoji">🏠</span>Главная
+  </button>
+  <button class="tab" data-screen="flash" onclick="startMode('flash')">
+    <span class="emoji">🃏</span>Карточки
+  </button>
+  <button class="tab" data-screen="quiz" onclick="startMode('learn')">
+    <span class="emoji">🎓</span>Учить
+  </button>
+  <button class="tab" data-screen="match" onclick="startMode('match')">
+    <span class="emoji">⚡</span>Подбор
+  </button>
+</div>
+
+<!-- EDITOR -->
+<div class="modal-overlay" id="editorOverlay">
+  <div class="modal">
+    <h3>Редактор карточек <button onclick="closeEditor()">✕</button></h3>
+    <div id="editRows"></div>
+    <div class="modal-actions">
+      <button class="btn-add" onclick="addEditRow()">+ Добавить</button>
+      <button class="btn-save" onclick="saveEditor()">💾 Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============ ДАННЫЕ ============ */
+let cards = JSON.parse(localStorage.getItem('quizletCards') || 'null') || [
+  { q: "Что такое HTML?", a: "Язык разметки гипертекста" },
+  { q: "Столица Франции?", a: "Париж" },
+  { q: "2 + 2 * 2 = ?", a: "6" },
+  { q: "Кто написал «Войну и мир»?", a: "Лев Толстой" },
+  { q: "Сколько цветов у радуги?", a: "7" },
+  { q: "Какой газ нужен для дыхания?", a: "Кислород" },
+  { q: "Самый большой океан?", a: "Тихий" },
+  { q: "Год первого полёта в космос?", a: "1961" }
+];
+
+/* ============ СОСТОЯНИЕ ============ */
+let currentScreen = 'home';
+let currentMode = null;
+
+/* Flash */
+let flashIndex = 0;
+let flashFlipped = false;
+
+/* Quiz (learn + test) */
+let quizQuestions = [];
+let quizIndex = 0;
+let quizCorrect = 0;
+let quizAnswered = false;
+let quizMode = 'learn'; // 'learn' или 'test'
+
+/* Match */
+let matchTiles = [];
+let matchSelected = null;
+let matchMatched = 0;
+let matchStartTime = 0;
+let matchTimerId = null;
+
+/* ============ NAV ============ */
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.screen === name);
+  });
+  currentScreen = name;
+}
+
+function goHome() {
+  stopMatchTimer();
+  showScreen('home');
+  updateHome();
+}
+
+function updateHome() {
+  document.getElementById('setTitle').textContent = 'Мой набор';
+  document.getElementById('setCount').textContent = cards.length + ' ' + plural(cards.length, 'термин', 'термина', 'терминов');
+}
+
+function plural(n, one, few, many) {
+  const mod10 = n % 10, mod100 = n % 100;
+  if (mod10 === 1 && mod100 !== 11) return one;
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return few;
+  return many;
+}
+
+/* ============ СТАРТ РЕЖИМОВ ============ */
+function startMode(mode) {
+  if (cards.length < 2) {
+    alert('Добавь хотя бы 2 карточки!');
+    return;
+  }
+  stopMatchTimer();
+  currentMode = mode;
+
+  if (mode === 'flash') {
+    flashIndex = 0;
+    flashFlipped = false;
+    renderFlash();
+    showScreen('flash');
+  } else if (mode === 'learn' || mode === 'test') {
+    quizMode = mode;
+    startQuiz();
+  } else if (mode === 'match') {
+    startMatch();
+  }
+}
+
+/* ============ FLASHCARDS ============ */
+function renderFlash() {
+  const c = cards[flashIndex];
+  document.getElementById('flashFront').textContent = c.q;
+  document.getElementById('flashBack').textContent = c.a;
+  document.getElementById('flashProgress').textContent = (flashIndex + 1) + ' / ' + cards.length;
+  const fc = document.getElementById('flashcard');
+  flashFlipped = false;
+  fc.classList.remove('flipped');
+  document.getElementById('flashPrev').disabled = flashIndex === 0;
+  document.getElementById('flashNext').disabled = flashIndex === cards.length - 1;
+}
+
+function flipCard() {
+  flashFlipped = !flashFlipped;
+  document.getElementById('flashcard').classList.toggle('flipped', flashFlipped);
+}
+
+function flashNext() {
+  if (flashIndex < cards.length - 1) {
+    flashIndex++;
+    renderFlash();
+  }
+}
+
+function flashPrev() {
+  if (flashIndex > 0) {
+    flashIndex--;
+    renderFlash();
+  }
+}
+
+/* Свайпы на карточке */
+let touchStartX = 0, touchStartY = 0;
+document.getElementById('flashcard').addEventListener('touchstart', e => {
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+});
+document.getElementById('flashcard').addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  const dy = e.changedTouches[0].clientY - touchStartY;
+  if (Math.abs(dx) < 40 || Math.abs(dy) > Math.abs(dx)) return;
+  if (dx > 0) flashPrev();
+  else flashNext();
+});
+
+/* ============ QUIZ (learn/test) ============ */
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function startQuiz() {
+  // Собираем вопросы: берём все карточки, перемешиваем
+  const pool = shuffle(cards);
+  const numQ = quizMode === 'test'
+    ? pool.length
+    : Math.min(pool.length, 10); // learn — до 10 вопросов
+  quizQuestions = pool.slice(0, numQ).map(c => {
+    // 3 неправильных варианта из других карточек
+    const wrongs = shuffle(cards.filter(x => x.a !== c.a)).slice(0, 3).map(x => x.a);
+    return {
+      q: c.q,
+      correct: c.a,
+      options: shuffle([c.a, ...wrongs])
+    };
+  });
+  quizIndex = 0;
+  quizCorrect = 0;
+  quizAnswered = false;
+  renderQuiz();
+  showScreen('quiz');
+}
+
+function renderQuiz() {
+  const q = quizQuestions[quizIndex];
+  document.getElementById('quizCounter').textContent = (quizIndex + 1) + ' / ' + quizQuestions.length;
+  document.getElementById('quizProgress').style.width = ((quizIndex) / quizQuestions.length * 100) + '%';
+  document.getElementById('quizQuestion').textContent = q.q;
+
+  const box = document.getElementById('quizOptions');
+  box.innerHTML = '';
+  quizAnswered = false;
+
+  q.options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    btn.textContent = opt;
+    btn.onclick = () => answerQuiz(btn, opt);
+    box.appendChild(btn);
+  });
+}
+
+function answerQuiz(btn, chosen) {
+  if (quizAnswered) return;
+  quizAnswered = true;
+  const q = quizQuestions[quizIndex];
+  const buttons = document.querySelectorAll('#quizOptions .option');
+
+  buttons.forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.correct) b.classList.add('correct');
+  });
+
+  if (chosen === q.correct) {
+    quizCorrect++;
+    btn.classList.add('correct');
+  } else {
+    btn.classList.add('wrong');
+  }
+
+  setTimeout(() => {
+    quizIndex++;
+    if (quizIndex >= quizQuestions.length) {
+      finishQuiz();
+    } else {
+      renderQuiz();
+    }
+  }, 900);
+}
+
+function finishQuiz() {
+  const pct = Math.round(quizCorrect / quizQuestions.length * 100);
+  document.getElementById('resultScore').textContent = pct + '%';
+  document.getElementById('resultLabel').textContent =
+    pct === 100 ? '🏆 Идеально!' :
+    pct >= 70 ? '👍 Хороший результат' :
+    pct >= 40 ? '🙂 Есть над чем поработать' :
+    '📚 Стоит повторить';
+  showScreen('result');
+}
+
+function retry() {
+  if (currentMode) startMode(currentMode);
+}
+
+/* ============ MATCH ============ */
+function startMatch() {
+  // Берём до 6 пар
+  const pairs = shuffle(cards).slice(0, Math.min(6, cards.length));
+  matchTiles = [];
+  pairs.forEach((c, i) => {
+    matchTiles.push({ id: i, text: c.q, type: 'q', pairId: i, matched: false });
+    matchTiles.push({ id: i + 100, text: c.a, type: 'a', pairId: i, matched: false });
+  });
+  matchTiles = shuffle(matchTiles);
+  matchSelected = null;
+  matchMatched = 0;
+  renderMatch();
+  matchStartTime = Date.now();
+  startMatchTimer();
+  showScreen('match');
+}
+
+function renderMatch() {
+  const grid = document.getElementById('matchGrid');
+  grid.innerHTML = '';
+  matchTiles.forEach((tile, idx) => {
+    const el = document.createElement('div');
+    el.className = 'match-tile';
+    if (tile.matched) el.classList.add('matched');
+    if (matchSelected === idx) el.classList.add('selected');
+    el.textContent = tile.text;
+    el.onclick = () => clickMatch(idx);
+    grid.appendChild(el);
+  });
+}
+
+function clickMatch(idx) {
+  const tile = matchTiles[idx];
+  if (tile.matched) return;
+
+  if (matchSelected === null) {
+    matchSelected = idx;
+    renderMatch();
+    return;
+  }
+
+  if (matchSelected === idx) {
+    matchSelected = null;
+    renderMatch();
+    return;
+  }
+
+  const first = matchTiles[matchSelected];
+  if (first.pairId === tile.pairId && first.type !== tile.type) {
+    // совпало
+    first.matched = true;
+    tile.matched = true;
+    matchMatched++;
+    matchSelected = null;
+    renderMatch();
+    if (matchMatched === matchTiles.length / 2) {
+      finishMatch();
+    }
+  } else {
+    // не совпало
+    const wrongIdx = idx;
+    const tiles = document.querySelectorAll('.match-tile');
+    tiles[matchSelected].classList.add('wrong');
+    tiles[wrongIdx].classList.add('wrong');
+    setTimeout(() => {
+      matchSelected = null;
+      renderMatch();
+    }, 500);
+  }
+}
+
+function startMatchTimer() {
+  stopMatchTimer();
+  const update = () => {
+    const t = (Date.now() - matchStartTime) / 1000;
+    document.getElementById('matchTimer').textContent = t.toFixed(1) + 'с';
+  };
+  update();
+  matchTimerId = setInterval(update, 100);
+}
+
+function stopMatchTimer() {
+  if (matchTimerId) {
+    clearInterval(matchTimerId);
+    matchTimerId = null;
+  }
+}
+
+function finishMatch() {
+  stopMatchTimer();
+  const t = ((Date.now() - matchStartTime) / 1000).toFixed(1);
+  setTimeout(() => {
+    document.getElementById('resultScore').textContent = t + 'с';
+    document.getElementById('resultLabel').textContent = '⚡ Все пары найдены!';
+    showScreen('result');
+  }, 400);
+}
+
+/* ============ EDITOR ============ */
+let editBuffer = [];
+
+function openEditor() {
+  editBuffer = cards.map(c => ({ ...c }));
+  renderEditor();
+  document.getElementById('editorOverlay').classList.add('active');
+}
+
+function closeEditor() {
+  document.getElementById('editorOverlay').classList.remove('active');
+}
+
+function renderEditor() {
+  const box = document.getElementById('editRows');
+  box.innerHTML = '';
+  editBuffer.forEach((c, i) => {
+    const row = document.createElement('div');
+    row.className = 'edit-row';
+    const q = document.createElement('input');
+    q.value = c.q;
+    q.placeholder = 'Вопрос';
+    q.oninput = e => editBuffer[i].q = e.target.value;
+    const a = document.createElement('input');
+    a.value = c.a;
+    a.placeholder = 'Ответ';
+    a.oninput = e => editBuffer[i].a = e.target.value;
+    const del = document.createElement('button');
+    del.textContent = '✕';
+    del.onclick = () => {
+      editBuffer.splice(i, 1);
+      renderEditor();
+    };
+    row.append(q, a, del);
+    box.appendChild(row);
+  });
+}
+
+function addEditRow() {
+  editBuffer.push({ q: '', a: '' });
+  renderEditor();
+  // Скролл вниз
+  const modal = document.querySelector('.modal');
+  setTimeout(() => modal.scrollTop = modal.scrollHeight, 50);
+}
+
+function saveEditor() {
+  const clean = editBuffer.filter(c => c.q.trim() && c.a.trim());
+  if (clean.length < 2) {
+    alert('Нужно минимум 2 заполненные карточки!');
+    return;
+  }
+  cards = clean;
+  localStorage.setItem('quizletCards', JSON.stringify(cards));
+  closeEditor();
+  updateHome();
+}
+
+function resetProgress() {
+  if (confirm('Сбросить все карточки к стандартным?')) {
+    localStorage.removeItem('quizletCards');
+    location.reload();
+  }
+}
+
+/* ============ INIT ============ */
+updateHome();
+</script>
+</body>
+</html>
