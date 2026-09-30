@@ -25,7 +25,6 @@
     flex-direction: column;
   }
 
-  /* ===== HEADER ===== */
   header {
     background: #fff;
     padding: 12px 16px;
@@ -33,61 +32,29 @@
     align-items: center;
     justify-content: space-between;
     box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    position: sticky;
-    top: 0;
-    z-index: 10;
+    position: sticky; top: 0; z-index: 10;
   }
-  .logo {
-    font-weight: 800;
-    font-size: 20px;
-    color: var(--blue);
-    letter-spacing: -0.5px;
-  }
-  .header-actions { display: flex; gap: 8px; }
+  .logo { font-weight: 800; font-size: 20px; color: var(--blue); letter-spacing: -0.5px; }
+  .header-actions { display: flex; gap: 4px; }
   .icon-btn {
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-    padding: 6px 10px;
-    border-radius: 8px;
-    color: var(--gray);
+    background: none; border: none; font-size: 19px; cursor: pointer;
+    padding: 6px 9px; border-radius: 8px; color: var(--gray);
   }
   .icon-btn:hover { background: #f0f1f7; }
 
-  /* ===== SCREENS ===== */
   .screen {
-    display: none;
-    flex: 1;
-    padding: 20px 16px 100px;
-    max-width: 700px;
-    width: 100%;
-    margin: 0 auto;
+    display: none; flex: 1; padding: 20px 16px 100px;
+    max-width: 700px; width: 100%; margin: 0 auto;
   }
   .screen.active { display: block; }
 
-  /* ===== HOME ===== */
-  .home-title {
-    font-size: 26px;
-    font-weight: 800;
-    margin-bottom: 6px;
-  }
-  .home-sub {
-    color: var(--gray);
-    margin-bottom: 24px;
-    font-size: 14px;
-  }
-  .modes {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
+  /* HOME */
+  .home-title { font-size: 26px; font-weight: 800; margin-bottom: 6px; }
+  .home-sub { color: var(--gray); margin-bottom: 24px; font-size: 14px; }
+  .modes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
   .mode-card {
-    background: #fff;
-    border-radius: 14px;
-    padding: 20px 16px;
-    cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s;
+    background: #fff; border-radius: 14px; padding: 20px 16px;
+    cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
     border: 2px solid transparent;
   }
   .mode-card:hover {
@@ -99,197 +66,80 @@
   .mode-card .name { font-weight: 700; font-size: 16px; margin-bottom: 2px; }
   .mode-card .desc { font-size: 12px; color: var(--gray); }
 
-  /* ===== FLASHCARDS ===== */
-  .cards-progress {
-    text-align: center;
-    color: var(--gray);
-    font-size: 14px;
-    margin-bottom: 14px;
-  }
-  .flashcard-wrap {
-    perspective: 1200px;
-    height: 340px;
-    margin-bottom: 24px;
-  }
+  /* FLASHCARDS */
+  .cards-progress { text-align: center; color: var(--gray); font-size: 14px; margin-bottom: 14px; }
+  .flashcard-wrap { perspective: 1200px; height: 340px; margin-bottom: 24px; }
   .flashcard {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 0.5s;
-    cursor: pointer;
+    width: 100%; height: 100%; position: relative;
+    transform-style: preserve-3d; transition: transform 0.5s; cursor: pointer;
   }
   .flashcard.flipped { transform: rotateY(180deg); }
   .flashcard-side {
-    position: absolute;
-    inset: 0;
-    background: #fff;
-    border-radius: 18px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 28px;
-    font-size: 22px;
-    text-align: center;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
+    position: absolute; inset: 0; background: #fff;
+    border-radius: 18px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    display: flex; align-items: center; justify-content: center;
+    padding: 28px; font-size: 22px; text-align: center;
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
   }
-  .flashcard-side.back {
-    transform: rotateY(180deg);
-    color: var(--blue);
-    font-weight: 600;
-  }
+  .flashcard-side.back { transform: rotateY(180deg); color: var(--blue); font-weight: 600; }
   .hint {
-    position: absolute;
-    bottom: 14px;
-    left: 0;
-    right: 0;
-    text-align: center;
-    font-size: 12px;
-    color: #b0b5c8;
+    position: absolute; bottom: 14px; left: 0; right: 0;
+    text-align: center; font-size: 12px; color: #b0b5c8;
   }
 
-  /* ===== NAV BUTTONS ===== */
-  .nav-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-  }
+  .nav-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
   .nav-btn {
-    flex: 1;
-    padding: 14px;
-    border-radius: 12px;
-    border: 2px solid #e5e8f5;
-    background: #fff;
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--dark);
-    cursor: pointer;
-    transition: all 0.15s;
+    flex: 1; padding: 14px; border-radius: 12px;
+    border: 2px solid #e5e8f5; background: #fff;
+    font-size: 15px; font-weight: 600; color: var(--dark);
+    cursor: pointer; transition: all 0.15s; font-family: inherit;
   }
   .nav-btn:active { transform: scale(0.97); }
-  .nav-btn.primary {
-    background: var(--blue);
-    color: #fff;
-    border-color: var(--blue);
-  }
+  .nav-btn.primary { background: var(--blue); color: #fff; border-color: var(--blue); }
   .nav-btn.primary:hover { background: var(--blue-dark); }
   .nav-btn:disabled { opacity: 0.4; }
 
-  /* ===== LEARN / TEST ===== */
-  .q-counter {
-    text-align: center;
-    color: var(--gray);
-    font-size: 14px;
-    margin-bottom: 10px;
-  }
+  /* QUIZ */
+  .q-counter { text-align: center; color: var(--gray); font-size: 14px; margin-bottom: 10px; }
   .progress-bar {
-    height: 6px;
-    background: #e5e8f5;
-    border-radius: 3px;
-    overflow: hidden;
-    margin-bottom: 28px;
+    height: 6px; background: #e5e8f5; border-radius: 3px;
+    overflow: hidden; margin-bottom: 28px;
   }
-  .progress-bar-fill {
-    height: 100%;
-    background: var(--blue);
-    transition: width 0.3s;
-  }
+  .progress-bar-fill { height: 100%; background: var(--blue); transition: width 0.3s; }
   .question {
-    background: #fff;
-    border-radius: 16px;
-    padding: 32px 20px;
-    text-align: center;
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-    min-height: 120px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background: #fff; border-radius: 16px; padding: 32px 20px;
+    text-align: center; font-size: 20px; font-weight: 600;
+    margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    min-height: 120px; display: flex; align-items: center; justify-content: center;
   }
   .options { display: flex; flex-direction: column; gap: 10px; }
   .option {
-    padding: 16px;
-    border-radius: 12px;
-    border: 2px solid #e5e8f5;
-    background: #fff;
-    font-size: 15px;
-    font-weight: 500;
-    cursor: pointer;
-    text-align: left;
-    transition: all 0.15s;
-    color: var(--dark);
+    padding: 16px; border-radius: 12px; border: 2px solid #e5e8f5;
+    background: #fff; font-size: 15px; font-weight: 500;
+    cursor: pointer; text-align: left; transition: all 0.15s;
+    color: var(--dark); font-family: inherit;
   }
   .option:hover { border-color: var(--blue); background: #f5f6ff; }
-  .option.correct {
-    background: #dcfce7;
-    border-color: var(--green);
-    color: #166534;
-  }
-  .option.wrong {
-    background: #fee2e2;
-    border-color: var(--red);
-    color: #991b1b;
-  }
+  .option.correct { background: #dcfce7; border-color: var(--green); color: #166534; }
+  .option.wrong { background: #fee2e2; border-color: var(--red); color: #991b1b; }
   .option:disabled { cursor: default; }
 
-  /* ===== RESULT ===== */
-  .result {
-    text-align: center;
-    padding: 40px 20px;
-  }
-  .result .score {
-    font-size: 64px;
-    font-weight: 800;
-    color: var(--blue);
-    margin-bottom: 10px;
-  }
-  .result .label {
-    font-size: 18px;
-    color: var(--gray);
-    margin-bottom: 30px;
-  }
-
-  /* ===== MATCH ===== */
-  .match-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
+  /* MATCH */
+  .match-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .match-tile {
-    padding: 22px 12px;
-    border-radius: 12px;
-    background: #fff;
-    border: 2px solid #e5e8f5;
-    font-size: 14px;
-    font-weight: 500;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.15s;
-    min-height: 70px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    word-break: break-word;
+    padding: 22px 12px; border-radius: 12px; background: #fff;
+    border: 2px solid #e5e8f5; font-size: 14px; font-weight: 500;
+    text-align: center; cursor: pointer; transition: all 0.15s;
+    min-height: 70px; display: flex; align-items: center;
+    justify-content: center; word-break: break-word;
   }
-  .match-tile.selected {
-    border-color: var(--blue);
-    background: #f5f6ff;
-  }
+  .match-tile.selected { border-color: var(--blue); background: #f5f6ff; }
   .match-tile.matched {
-    background: #dcfce7;
-    border-color: var(--green);
-    color: transparent;
-    pointer-events: none;
+    background: #dcfce7; border-color: var(--green);
+    color: transparent; pointer-events: none;
   }
   .match-tile.wrong {
-    animation: shake 0.4s;
-    border-color: var(--red);
-    background: #fee2e2;
+    animation: shake 0.4s; border-color: var(--red); background: #fee2e2;
   }
   @keyframes shake {
     0%, 100% { transform: translateX(0); }
@@ -297,120 +147,88 @@
     75% { transform: translateX(6px); }
   }
   .match-timer {
-    text-align: center;
-    font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 16px;
-    color: var(--blue);
+    text-align: center; font-size: 24px; font-weight: 700;
+    margin-bottom: 16px; color: var(--blue);
   }
 
-  /* ===== FOOTER TABBAR ===== */
+  /* RESULT */
+  .result { text-align: center; padding: 40px 20px; }
+  .result .score {
+    font-size: 64px; font-weight: 800; color: var(--blue); margin-bottom: 10px;
+  }
+  .result .label { font-size: 18px; color: var(--gray); margin-bottom: 30px; }
+
+  /* TABBAR */
   .tabbar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #fff;
-    border-top: 1px solid #e5e8f5;
-    display: flex;
+    position: fixed; bottom: 0; left: 0; right: 0; background: #fff;
+    border-top: 1px solid #e5e8f5; display: flex;
     justify-content: space-around;
-    padding: 8px 0 max(8px, env(safe-area-inset-bottom));
-    z-index: 10;
+    padding: 8px 0 max(8px, env(safe-area-inset-bottom)); z-index: 10;
   }
   .tab {
-    background: none;
-    border: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-    font-size: 10px;
-    color: var(--gray);
-    cursor: pointer;
-    padding: 6px 14px;
-    border-radius: 8px;
-    font-weight: 600;
+    background: none; border: none; display: flex; flex-direction: column;
+    align-items: center; gap: 2px; font-size: 10px; color: var(--gray);
+    cursor: pointer; padding: 6px 14px; border-radius: 8px;
+    font-weight: 600; font-family: inherit;
   }
   .tab .emoji { font-size: 20px; }
   .tab.active { color: var(--blue); }
 
-  /* ===== EDITOR MODAL ===== */
+  /* MODAL */
   .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-    padding: 20px;
+    position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+    display: none; align-items: center; justify-content: center;
+    z-index: 100; padding: 20px;
   }
   .modal-overlay.active { display: flex; }
   .modal {
-    background: #fff;
-    border-radius: 16px;
-    padding: 20px;
-    width: 100%;
-    max-width: 520px;
-    max-height: 85vh;
-    overflow-y: auto;
+    background: #fff; border-radius: 16px; padding: 20px;
+    width: 100%; max-width: 520px; max-height: 85vh; overflow-y: auto;
   }
   .modal h3 {
-    font-size: 18px;
-    margin-bottom: 14px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    font-size: 18px; margin-bottom: 14px; display: flex;
+    justify-content: space-between; align-items: center;
   }
   .modal h3 button {
-    background: none;
-    border: none;
-    font-size: 22px;
-    cursor: pointer;
-    color: var(--gray);
+    background: none; border: none; font-size: 22px;
+    cursor: pointer; color: var(--gray);
   }
-  .edit-row {
-    display: flex;
-    gap: 6px;
-    margin-bottom: 8px;
-  }
+  .edit-row { display: flex; gap: 6px; margin-bottom: 8px; }
   .edit-row input {
-    flex: 1;
-    padding: 10px;
-    border: 1.5px solid #d1d5db;
-    border-radius: 8px;
-    font-size: 14px;
-    font-family: inherit;
+    flex: 1; padding: 10px; border: 1.5px solid #d1d5db;
+    border-radius: 8px; font-size: 14px; font-family: inherit;
   }
-  .edit-row input:focus {
-    outline: none;
-    border-color: var(--blue);
-  }
+  .edit-row input:focus { outline: none; border-color: var(--blue); }
   .edit-row button {
-    background: var(--red);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 0 12px;
-    cursor: pointer;
-    font-size: 14px;
+    background: var(--red); color: #fff; border: none;
+    border-radius: 8px; padding: 0 12px; cursor: pointer; font-size: 14px;
   }
-  .modal-actions {
-    display: flex;
-    gap: 8px;
-    margin-top: 14px;
-  }
+  .modal-actions { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
   .modal-actions button {
-    flex: 1;
-    padding: 12px;
-    border-radius: 10px;
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    font-size: 14px;
+    flex: 1; padding: 12px; border-radius: 10px; border: none;
+    font-weight: 600; cursor: pointer; font-size: 14px;
+    font-family: inherit; min-width: 100px;
   }
   .btn-add { background: #e5e8f5; color: var(--blue); }
+  .btn-import { background: #fef3c7; color: #92400e; }
   .btn-save { background: var(--blue); color: #fff; }
+
+  textarea.import-area {
+    width: 100%; min-height: 200px; padding: 12px;
+    border: 1.5px solid #d1d5db; border-radius: 10px;
+    font-size: 14px; font-family: 'SF Mono', Monaco, monospace;
+    resize: vertical;
+  }
+  textarea.import-area:focus { outline: none; border-color: var(--blue); }
+  .import-help {
+    font-size: 12px; color: var(--gray); margin: 8px 0 14px;
+    background: #f8f9fc; padding: 10px; border-radius: 8px;
+    line-height: 1.5;
+  }
+  .import-help code {
+    background: #e5e8f5; padding: 1px 5px; border-radius: 3px;
+    font-size: 11px;
+  }
 </style>
 </head>
 <body>
@@ -510,14 +328,36 @@
   </button>
 </div>
 
-<!-- EDITOR -->
+<!-- EDITOR MODAL -->
 <div class="modal-overlay" id="editorOverlay">
   <div class="modal">
     <h3>Редактор карточек <button onclick="closeEditor()">✕</button></h3>
     <div id="editRows"></div>
     <div class="modal-actions">
       <button class="btn-add" onclick="addEditRow()">+ Добавить</button>
+      <button class="btn-import" onclick="openQuizletImport()">📥 Из Quizlet</button>
       <button class="btn-save" onclick="saveEditor()">💾 Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZLET IMPORT MODAL -->
+<div class="modal-overlay" id="quizletImportOverlay">
+  <div class="modal">
+    <h3>Импорт из Quizlet <button onclick="closeQuizletImport()">✕</button></h3>
+    <div class="import-help">
+      <b>Как скопировать из Quizlet:</b><br>
+      1. Открой набор в Quizlet → нажми <code>⋮</code> (три точки) → <b>Экспортировать</b><br>
+      2. Формат: <b>Строки разделены — перенос строки</b>, <b>Между термином и определением — табуляция</b> (или <code>-</code>, <code>,</code>)<br>
+      3. Нажми <b>Копировать</b> и вставь сюда 👇
+    </div>
+    <textarea class="import-area" id="quizletImportArea"
+      placeholder="термин	определение
+термин2	определение2
+термин3	определение3"></textarea>
+    <div class="modal-actions">
+      <button class="btn-add" onclick="closeQuizletImport()">Отмена</button>
+      <button class="btn-save" onclick="doQuizletImport()">📥 Импортировать</button>
     </div>
   </div>
 </div>
@@ -539,18 +379,15 @@ let cards = JSON.parse(localStorage.getItem('quizletCards') || 'null') || [
 let currentScreen = 'home';
 let currentMode = null;
 
-/* Flash */
 let flashIndex = 0;
 let flashFlipped = false;
 
-/* Quiz (learn + test) */
 let quizQuestions = [];
 let quizIndex = 0;
 let quizCorrect = 0;
 let quizAnswered = false;
-let quizMode = 'learn'; // 'learn' или 'test'
+let quizMode = 'learn';
 
-/* Match */
 let matchTiles = [];
 let matchSelected = null;
 let matchMatched = 0;
@@ -575,7 +412,8 @@ function goHome() {
 
 function updateHome() {
   document.getElementById('setTitle').textContent = 'Мой набор';
-  document.getElementById('setCount').textContent = cards.length + ' ' + plural(cards.length, 'термин', 'термина', 'терминов');
+  document.getElementById('setCount').textContent = cards.length + ' ' +
+    plural(cards.length, 'термин', 'термина', 'терминов');
 }
 
 function plural(n, one, few, many) {
@@ -613,9 +451,8 @@ function renderFlash() {
   document.getElementById('flashFront').textContent = c.q;
   document.getElementById('flashBack').textContent = c.a;
   document.getElementById('flashProgress').textContent = (flashIndex + 1) + ' / ' + cards.length;
-  const fc = document.getElementById('flashcard');
   flashFlipped = false;
-  fc.classList.remove('flipped');
+  document.getElementById('flashcard').classList.remove('flipped');
   document.getElementById('flashPrev').disabled = flashIndex === 0;
   document.getElementById('flashNext').disabled = flashIndex === cards.length - 1;
 }
@@ -639,7 +476,6 @@ function flashPrev() {
   }
 }
 
-/* Свайпы на карточке */
 let touchStartX = 0, touchStartY = 0;
 document.getElementById('flashcard').addEventListener('touchstart', e => {
   touchStartX = e.touches[0].clientX;
@@ -653,7 +489,7 @@ document.getElementById('flashcard').addEventListener('touchend', e => {
   else flashNext();
 });
 
-/* ============ QUIZ (learn/test) ============ */
+/* ============ QUIZ ============ */
 function shuffle(arr) {
   const a = arr.slice();
   for (let i = a.length - 1; i > 0; i--) {
@@ -664,14 +500,15 @@ function shuffle(arr) {
 }
 
 function startQuiz() {
-  // Собираем вопросы: берём все карточки, перемешиваем
   const pool = shuffle(cards);
   const numQ = quizMode === 'test'
     ? pool.length
-    : Math.min(pool.length, 10); // learn — до 10 вопросов
+    : Math.min(pool.length, 10);
   quizQuestions = pool.slice(0, numQ).map(c => {
-    // 3 неправильных варианта из других карточек
     const wrongs = shuffle(cards.filter(x => x.a !== c.a)).slice(0, 3).map(x => x.a);
+    while (wrongs.length < 3 && cards.length > 1) {
+      wrongs.push(cards[Math.floor(Math.random() * cards.length)].a);
+    }
     return {
       q: c.q,
       correct: c.a,
@@ -749,7 +586,6 @@ function retry() {
 
 /* ============ MATCH ============ */
 function startMatch() {
-  // Берём до 6 пар
   const pairs = shuffle(cards).slice(0, Math.min(6, cards.length));
   matchTiles = [];
   pairs.forEach((c, i) => {
@@ -797,7 +633,6 @@ function clickMatch(idx) {
 
   const first = matchTiles[matchSelected];
   if (first.pairId === tile.pairId && first.type !== tile.type) {
-    // совпало
     first.matched = true;
     tile.matched = true;
     matchMatched++;
@@ -807,15 +642,11 @@ function clickMatch(idx) {
       finishMatch();
     }
   } else {
-    // не совпало
-    const wrongIdx = idx;
     const tiles = document.querySelectorAll('.match-tile');
     tiles[matchSelected].classList.add('wrong');
-    tiles[wrongIdx].classList.add('wrong');
-    setTimeout(() => {
-      matchSelected = null;
-      renderMatch();
-    }, 500);
+    tiles[idx].classList.add('wrong');
+    matchSelected = null;
+    setTimeout(() => renderMatch(), 500);
   }
 }
 
@@ -887,8 +718,7 @@ function renderEditor() {
 function addEditRow() {
   editBuffer.push({ q: '', a: '' });
   renderEditor();
-  // Скролл вниз
-  const modal = document.querySelector('.modal');
+  const modal = document.querySelector('#editorOverlay .modal');
   setTimeout(() => modal.scrollTop = modal.scrollHeight, 50);
 }
 
@@ -909,6 +739,48 @@ function resetProgress() {
     localStorage.removeItem('quizletCards');
     location.reload();
   }
+}
+
+/* ============ ИМПОРТ ИЗ QUIZLET ============ */
+function openQuizletImport() {
+  document.getElementById('quizletImportOverlay').classList.add('active');
+  document.getElementById('quizletImportArea').focus();
+}
+
+function closeQuizletImport() {
+  document.getElementById('quizletImportOverlay').classList.remove('active');
+}
+
+function doQuizletImport() {
+  const text = document.getElementById('quizletImportArea').value;
+  const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+  const newCards = [];
+
+  lines.forEach(line => {
+    let parts = line.split('\t');
+    if (parts.length < 2) parts = line.split(';');
+    if (parts.length < 2) parts = line.split(',');
+    if (parts.length < 2) parts = line.split(/\s+-\s+/);
+    if (parts.length < 2) parts = line.split(/\s{2,}/);
+
+    if (parts.length >= 2) {
+      const q = parts[0].trim();
+      const a = parts.slice(1).join(' ').trim();
+      if (q && a) newCards.push({ q, a });
+    }
+  });
+
+  if (newCards.length < 1) {
+    alert('Не удалось распознать карточки. Проверь, что скопировал из «Экспортировать» в Quizlet.');
+    return;
+  }
+
+  editBuffer = editBuffer.concat(newCards);
+  renderEditor();
+  closeQuizletImport();
+  document.getElementById('quizletImportArea').value = '';
+  alert('Добавлено из Quizlet: ' + newCards.length +
+        '. Теперь нажми «💾 Сохранить», чтобы применить изменения.');
 }
 
 /* ============ INIT ============ */
